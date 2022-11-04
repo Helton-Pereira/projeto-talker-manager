@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs').promises;
 const path = require('path');
+const str = require('@supercharge/strings');
 
 const app = express();
 app.use(bodyParser.json());
@@ -48,6 +49,17 @@ app.get('/talker/:id', async (req, res) => {
     return res.status(404).send({ message: 'Pessoa palestrante não encontrada' });
   } 
     return res.status(200).json(talker);
+});
+
+// Req 3
+app.post('/login', (req, res) => {
+  const { email, password } = req.body;
+  const generatedToken = str.random(16);
+  // Math.random().toString(16).substr(2)
+
+  if (email && password) {
+    return res.status(200).send({ token: generatedToken });
+  }
 });
 
 app.listen(PORT, () => {
