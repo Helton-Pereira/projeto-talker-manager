@@ -28,6 +28,7 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
+// Req 1
 app.get('/talker', async (req, res) => {
   try {
     const talkers = await getTalkers();
@@ -35,6 +36,18 @@ app.get('/talker', async (req, res) => {
   } catch (error) {
     res.status(500).send({ message: error.message });
   }
+});
+
+// Req 2
+app.get('/talker/:id', async (req, res) => {
+  const { id } = req.params;
+  const talkers = await getTalkers();
+  const talker = talkers.find((t) => t.id === Number(id));
+  
+  if (!talker) {
+    return res.status(404).send({ message: 'Pessoa palestrante não encontrada' });
+  } 
+    return res.status(200).json(talker);
 });
 
 app.listen(PORT, () => {
