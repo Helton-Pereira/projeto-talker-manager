@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const fs = require('fs').promises;
 const path = require('path');
 const str = require('@supercharge/strings');
+const validateEmail = require('./middlewares/validateEmail');
+const validatePassword = require('./middlewares/validatePassword');
 
 const app = express();
 app.use(bodyParser.json());
@@ -52,7 +54,10 @@ app.get('/talker/:id', async (req, res) => {
 });
 
 // Req 3
-app.post('/login', (req, res) => {
+app.post('/login',
+  validateEmail,
+  validatePassword,
+  (req, res) => {
   const { email, password } = req.body;
   const generatedToken = str.random(16);
   // Math.random().toString(16).substr(2)
